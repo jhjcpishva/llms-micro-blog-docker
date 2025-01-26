@@ -1,0 +1,22 @@
+services:
+  web:
+    image: llms-micro-blog-app:latest
+    depends_on:
+      - llms
+      - pocketbase
+    ports:
+      - "5174:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  llms:
+    image: ghcr.io/jhjcpishva/line-login-micro-service:latest
+    env_file:
+      - .env
+    volumes:
+      - "./docker/llms/db:/db"
+    ports:
+      - "8000:8000"
+  pocketbase:
+    image: llms-micro-blog-pocketbase
+    ports:
+      - "8090:8090"
