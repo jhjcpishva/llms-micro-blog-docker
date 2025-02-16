@@ -1,6 +1,6 @@
 services:
   web:
-    image: llms-micro-blog-app:latest
+    image: ghcr.io/jhjcpishva/llms-micro-blog-web:0.1.0
     depends_on:
       - llms
       - pocketbase
@@ -17,6 +17,8 @@ services:
     ports:
       - "8000:8000"
   pocketbase:
-    image: llms-micro-blog-pocketbase
+    image: ghcr.io/jhjcpishva/llms-micro-blog-pocketbase:0.1.0
     ports:
       - "8090:8090"
+    volumes:
+      - ./docker/pocketbase/pb_data:/pb_data
