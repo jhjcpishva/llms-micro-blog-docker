@@ -2,8 +2,10 @@ services:
   web:
     image: ghcr.io/jhjcpishva/llms-micro-blog-web:0.1.2
     depends_on:
-      - llms
-      - pocketbase
+      llms:
+        condition: service_started
+      pocketbase:
+        condition: service_healthy
     ports:
       - "5174:80"
     volumes:
@@ -22,3 +24,9 @@ services:
       - "8090:8090"
     volumes:
       - ./docker/pocketbase/pb_data:/pb_data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:8090/api/health || curl -fsS http://127.0.0.1:8090/api/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
